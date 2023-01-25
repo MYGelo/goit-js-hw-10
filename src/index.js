@@ -1,57 +1,52 @@
-import './css/styles.css';
 import Notiflix from 'notiflix';
+import 'notiflix/dist/notiflix-3.2.5.min.css';
+
 import debounce from 'lodash.debounce';
-import { fetchCountries } from './fetchCountries';
 
-const refs = {
-  searchBox: document.querySelector('#search-box'),
-  countryList: document.querySelector('.country-list'),
-  countryInfo: document.querySelector('.country-info'),
-  DEBOUNCE_DELAY: (DEBOUNCE_DELAY = 300),
-};
+import './css/styles.css';
 
-const searchCountry = () => {
-  const searchTerm = refs.searchBox.value.trim();
+import { fetchCountries } from './js/fetchCountries';
+
+const DEBOUNCE_DELAY = 300;
+
+const searchBox = document.querySelector('#search-box');
+const countryList = document.querySelector('.country-list');
+const countryInfo = document.querySelector('.country-info');
+
+const searchCountry = e => {
+  const searchTerm = searchBox.value.trim();
 
   fetchCountries(searchTerm)
     .then(data => {
       countriesData(data);
     })
     .catch(error => {
-      if (trimmedValue !== '') {
-        errorInput(error);
-      }
-      if (trimmedValue === '') {
-        clearData(refs.countryList);
-        clearData(refs.countryInfo);
+      if (searchTerm !== '') {
+        Notiflix.Notify.failure('Oops, there is no country with that name');
       }
     });
+
+  e.preventDefault();
 };
-function errorInput() {
-  Notiflix.Notify.failure('Ops, there is no country with that name');
-  console.log(
-    'Ops, there is no country with that name (Ой, нет страны с таким названием)'
-  );
-}
 
 function countriesData(data) {
   if (data.length > 10) {
+    clearData(countryList);
+    clearData(countryInfo);
+
     Notiflix.Notify.info(
       'Too many matches found. Please enter a more specific name.'
     );
-    console.log(
-      'Too many matches found. Please enter a more specific name(Найдено слишком много совпадений. Пожалуйста, введите более конкретное имя).'
-    );
   } else if (data.length > 1 && data.length <= 10) {
-    clearData(refs.countryList);
-    clearData(refs.countryInfo);
+    clearData(countryList);
+    clearData(countryInfo);
 
-    return (refs.countryList.innerHTML = data
+    return (countryList.innerHTML = data
       .map(
         item => `
                 
-                    <li>
-                        <img src = '${item.flags.svg}' width = 150px />
+                    <li class = 'country'>
+                        <img src = '${item.flags.svg}' />
                         <p>${item.name}</p>
                     </li>
                 
@@ -59,23 +54,26 @@ function countriesData(data) {
       )
       .join(''));
   } else {
-    clearData(refs.countryList);
-    clearData(refs.countryInfo);
-    return (refs.countryInfo.innerHTML = data
+    clearData(countryList);
+    clearData(countryInfo);
+
+    return (countryInfo.innerHTML = data
       .map(
         item => `
                 
-                    <div >
+                    <div class = 'country'>
                     
-                        <img src = '${item.flags.svg}' width = 150px />
+                        <img src = '${item.flags.svg}' />
     
-                        <div>
+                        <div class = 'country-body'>
+                        
                             <h3>${item.name}</h3>
-                            <p>Region:  ${item.region}</p>
-                            <p>Capital:  ${item.capital}</p>
-                            <p>Population:  ${item.population.toLocaleString()}</p>
-                            <p>Languages:  ${item.languages[0].name}</p>
+                            <p><b>Region: </b> ${item.region}</p>
+                            <p><b>Capital: </b> ${item.capital}</p>
+                            <p><b>Population: </b> ${item.population.toLocaleString()}</p>
+                            <p><b>Languages: </b> ${item.languages[0].name}</p>
                         </div>
+    
                     </div>
                 
                 `
@@ -84,13 +82,14 @@ function countriesData(data) {
   }
 }
 
+searchBox.addEventListener('input', debounce(searchCountry, DEBOUNCE_DELAY));
+
 function clearData(output) {
   output.innerHTML = '';
 }
 
-refs.searchBox.addEventListener(
-  'input',
-  debounce(searchCountry, refs.DEBOUNCE_DELAY)
+searchBox.insertAdjacentHTML(
+  'beforebegin',
+  '<header><h1>Country Finder</h1></header>'
 );
-
-refs.searchBox.placeholder = 'Search for any country....';
+document.querySelector('#search-box').placeholder = 'Search for any country...';
