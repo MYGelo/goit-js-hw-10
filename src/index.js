@@ -57,21 +57,14 @@ function countriesData(data) {
     return (countryInfo.innerHTML = data
       .map(
         item => `
-                
-                    <div class = 'country'>
-                    
-                        <img src = '${item.flags.svg}' width = 150px />
-    
-                        <div class = 'country-body'>
-                        
-                            <h3>${item.name}</h3>
-                            <p><b>Region: </b> ${item.region}</p>
-                            <p><b>Capital: </b> ${item.capital}</p>
-                            <p><b>Population: </b> ${item.population.toLocaleString()}</p>
-                            <p><b>Languages: </b> ${item.languages[0].name}</p>
-                        </div>
-    
-                    </div>
+    <div class = 'country'>
+      <img src = '${item.flags.svg}' width = 150px />
+      <h3>${item.name}</h3>
+      <p><b>Region: </b> ${item.region}</p>
+      <p><b>Capital: </b> ${item.capital}</p>
+      <p><b>Population: </b> ${item.population.toLocaleString()}</p>
+      <p><b>Languages: </b> ${item.languages[0].name}</p>
+    </div>
                 
                 `
       )
@@ -85,8 +78,4 @@ function clearData(output) {
   output.innerHTML = '';
 }
 
-searchBox.insertAdjacentHTML(
-  'beforebegin',
-  '<header><h1>Country Finder</h1></header>'
-);
 document.querySelector('#search-box').placeholder = 'Search for any country...';
