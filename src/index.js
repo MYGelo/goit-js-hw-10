@@ -20,8 +20,8 @@ const searchCountry = e => {
         Notiflix.Notify.failure('Oops, there is no country with that name');
       }
       if (searchTerm === '') {
-        clearData(refs.countryList);
-        clearData(refs.countryInfo);
+        clearData(countryList);
+        clearData(countryInfo);
       }
     });
 
