@@ -43,7 +43,7 @@ function countriesData(data) {
         item => `
                 
                     <li class = 'country'>
-                        <img src = '${item.flags.svg} width = 150px' />
+                        <img src = '${item.flags.svg}' width = 150px />
                         <p>${item.name}</p>
                     </li>
                 
@@ -60,7 +60,7 @@ function countriesData(data) {
                 
                     <div class = 'country'>
                     
-                        <img src = '${item.flags.svg} width = 150px' />
+                        <img src = '${item.flags.svg}' width = 150px />
     
                         <div class = 'country-body'>
                         
