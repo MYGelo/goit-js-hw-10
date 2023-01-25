@@ -1,13 +1,9 @@
 import Notiflix from 'notiflix';
-
 import debounce from 'lodash.debounce';
-
 import './css/styles.css';
-
 import { fetchCountries } from './js/fetchCountries';
 
 const DEBOUNCE_DELAY = 300;
-
 const searchBox = document.querySelector('#search-box');
 const countryList = document.querySelector('.country-list');
 const countryInfo = document.querySelector('.country-info');
@@ -23,6 +19,10 @@ const searchCountry = e => {
       if (searchTerm !== '') {
         Notiflix.Notify.failure('Oops, there is no country with that name');
       }
+      if (trimmedValue === '') {
+        clearData(refs.countryList);
+        clearData(refs.countryInfo);
+      }
     });
 
   e.preventDefault();
@@ -30,9 +30,7 @@ const searchCountry = e => {
 
 function countriesData(data) {
   if (data.length > 10) {
-    clearData(countryList);
-    clearData(countryInfo);
-
+    //
     Notiflix.Notify.info(
       'Too many matches found. Please enter a more specific name.'
     );
