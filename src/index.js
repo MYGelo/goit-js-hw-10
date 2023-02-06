@@ -2,18 +2,18 @@ import Notiflix from 'notiflix';
 import debounce from 'lodash.debounce';
 import './css/styles.css';
 import { fetchCountries } from './js/fetchCountries';
+import getRefs from './js/refs';
 
 const DEBOUNCE_DELAY = 300;
-const searchBox = document.querySelector('#search-box');
-const countryList = document.querySelector('.country-list');
-const countryInfo = document.querySelector('.country-info');
 
-searchBox.addEventListener('input', debounce(searchCountry, DEBOUNCE_DELAY));
+const refs = getRefs();
+
+refs.searchBox.addEventListener('input', debounce(searchCountry, DEBOUNCE_DELAY));
 
 function searchCountry(e) {
   e.preventDefault();
   clearData();
-  const searchTerm = searchBox.value.trim();
+  const searchTerm = refs.searchBox.value.trim();
 
 if (searchTerm){
   fetchCountries(searchTerm).then(r => {
@@ -49,7 +49,7 @@ function listOfCountries(countries) {
     </li>`;
 
   }).join('');
-  countryList.innerHTML = markup;
+  refs.countryList.innerHTML = markup;
 }
 
 function renderCountry(countries) {
@@ -64,12 +64,12 @@ const markup = countries.map(country => {
   <p><b>Languages</b>: ${Object.values(country.languages)} </p>
   </div>`;
 }).join('');
-countryInfo.innerHTML = markup;
+refs.countryInfo.innerHTML = markup;
 }
 
 function clearData() {
-  countryInfo.innerHTML = '';
-  countryList.innerHTML = '';
+  refs.countryInfo.innerHTML = '';
+  refs.countryList.innerHTML = '';
 }
 
 

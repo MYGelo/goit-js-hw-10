@@ -1,4 +1,4 @@
-// export function fetchCountries(searchTerm) {
+// export function fetchCountries(searchTerm) { 
 //   return fetch(`https://restcountries.com/v2/name/${searchTerm}`)
 //     .then(response => {
 //       if (!response.ok) {
